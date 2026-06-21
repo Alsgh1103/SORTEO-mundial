@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo MUNDIVIEZO - FIFA WC 2026</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    
+    <!-- Tom Select for the dropdown -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+    <style>
+        /* Paleta Oficial de la Copa Mundial 2026 */
+        :root {
+            --wc-red: #E31C25;
+            --wc-orange: #F36D21;
+            --wc-lime: #B5D334;
+            --wc-blue: #1D428A;
+            --wc-purple: #6A2A88;
+            --wc-light-purple: #B598C4;
+            --wc-dark: #121212;
+            --wc-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--wc-white);
+            text-align: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            
+            /* Usamos la imagen proporcionada */
+            background-image: url('logo2026.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Capa menos oscura para que resalte más el colorido, compensado con glassmorphism oscuro */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: -2;
+        }
+
+        /* FONDOS TIPO COLLAGE (TUS FOTOS) */
+        .collage-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .img-bg {
+            position: absolute;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            border: 5px solid var(--wc-lime);
+            opacity: 0.6; /* Más visibles */
+            object-fit: cover;
+            transition: all 1s ease-in-out;
+            max-width: 220px; /* Reducido para evitar traslape */
+        }
+
+        /* HEADER Y LOGOS */
+        .header-section {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5.5em;
+            margin: 10px 0 0 0;
+            text-transform: uppercase;
+            /* Degradado de texto */
+            background: linear-gradient(to right, var(--wc-lime), #fff, var(--wc-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 4px 20px rgba(0,0,0,0.9);
+            letter-spacing: 2px;
+        }
+
+        .sponsor-subtitle {
+            color: var(--wc-lime);
+            font-size: 1.6em;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 900;
+            text-shadow: 2px 2px 8px #000;
+        }
+
+        /* CONTENEDORES PRINCIPALES (Efecto Cristal) */
+        .main-container {
+            background: rgba(18, 18, 18, 0.85); /* Más oscuro para resaltar el texto */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 6px solid var(--wc-red);
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 800px;
+            margin: 20px auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            position: relative;
+            z-index: 2;
+        }
+
+        h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--wc-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+        }
+
+        .setup-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            text-align: left;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: var(--wc-lime);
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--wc-blue);
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--wc-lime);
+            box-shadow: 0 0 15px rgba(181, 211, 52, 0.5);
+        }
+        
+        /* Ajustes de Tom Select para tema oscuro */
+        .ts-control {
+            background-color: rgba(0,0,0,0.8) !important;
+            border: 2px solid var(--wc-blue) !important;
+            color: white !important;
+            border-radius: 12px !important;
+            padding: 12px 15px !important;
+            font-size: 1.1em !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: bold !important;
+            min-height: 54px !important;
+        }
+        .ts-control input {
+            color: white !important;
+            font-size: 1em !important;
+        }
+        .ts-control .item {
+            color: white !important;
+            background-color: transparent !important;
+        }
+        .ts-control.focus {
+            border-color: var(--wc-lime) !important;
+            box-shadow: 0 0 15px rgba(181, 211, 52, 0.5) !important;
+        }
+        .ts-dropdown {
+            background-color: #1a1a1a !important;
+            color: white !important;
+            border: 2px solid var(--wc-lime) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9) !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 1.1em !important;
+            z-index: 100 !important;
+        }
+        .ts-dropdown .option {
+            padding: 10px 15px !important;
+        }
+        .ts-dropdown .active {
+            background-color: var(--wc-blue) !important;
+            color: white !important;
+        }
+        .item-flag {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        /* CHECKBOX Y BOTONES */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+            background: rgba(106, 42, 136, 0.4);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 6px solid var(--wc-orange);
+            text-align: left;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            accent-color: var(--wc-orange);
+        }
+
+        button {
+            background: linear-gradient(90deg, var(--wc-red), var(--wc-orange));
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.2em;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(243, 109, 33, 0.8);
+        }
+
+        button.secondary {
+            background: linear-gradient(90deg, var(--wc-blue), var(--wc-purple));
+        }
+
+        button.secondary:hover {
+            box-shadow: 0 10px 30px rgba(29, 66, 138, 0.8);
+        }
+
+        /* FORMULARIO DINÁMICO */
+        #players-form {
+            display: none;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px dashed rgba(255,255,255,0.2);
+        }
+
+        .player-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* RESULTADOS DEL SORTEO */
+        #results {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .groups-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .group-card {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .group-header {
+            color: var(--wc-white);
+            padding: 18px;
+            font-size: 1.6em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .group-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .group-card li {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .group-card li:last-child {
+            border-bottom: none;
+        }
+
+        .cpu-player {
+            color: var(--wc-light-purple);
+            font-style: italic;
+        }
+
+        .badge-country {
+            background: var(--wc-white);
+            color: var(--wc-dark);
+            padding: 5px 12px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cpu-player .badge-country {
+            background: #444;
+            color: #ddd;
+        }
+
+        /* REPRODUCTOR DE MÚSICA */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(18, 18, 18, 0.8);
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid var(--wc-lime);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .music-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: auto;
+            max-width: none;
+            box-shadow: none;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .music-btn:hover {
+            background: var(--wc-lime);
+            color: var(--wc-dark);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(181, 211, 52, 0.5);
+        }
+
+        /* FIFA CARD & PREDICTION */
+        .prediction-section {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .prediction-phrase {
+            color: var(--wc-orange);
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            min-height: 2.4em;
+        }
+
+        .fifa-card {
+            width: 280px;
+            height: 420px;
+            background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+            border-radius: 15px;
+            margin: 0 auto;
+            position: relative;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            color: #222;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            border: 3px solid #FFF8DC;
+            display: none;
+            animation: fadeInCard 1s ease forwards;
+        }
+
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .card-top {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-align: center;
+        }
+
+        .card-rating {
+            font-size: 2.8em;
+            font-weight: 900;
+            line-height: 1;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card-position {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-country {
+            font-size: 2em;
+        }
+
+        .card-image-container {
+            width: 170px;
+            height: 170px;
+            margin: 10px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            background: rgba(255,255,255,0.7);
+            margin-top: 35px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .card-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-name {
+            font-size: 1.8em;
+            font-weight: 900;
+            text-align: center;
+            margin: 15px 0 10px 0;
+            border-bottom: 2px solid rgba(0,0,0,0.2);
+            padding-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .stat-col {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .stat-col span {
+            font-weight: 900;
+            font-size: 1.3em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUCTOR DE MÚSICA -->
+    <div class="music-player">
+        <button id="prev-track-btn" class="music-btn" onclick="prevTrack()">⏮️ Anterior</button>
+        <button id="play-pause-btn" class="music-btn" onclick="toggleMusic()">🔇 Reproducir</button>
+        <button id="next-track-btn" class="music-btn" onclick="nextTrack()">⏭️ Siguiente</button>
+    </div>
+
+    <!-- FONDOS COLLAGE -->
+    <div class="collage-bg" id="collage-bg">
+        <img src="1.jpg" class="img-bg" id="rand-img-1" alt="Fondo 1" onerror="this.style.display='none'">
+        <img src="2.jpg" class="img-bg" id="rand-img-2" alt="Fondo 2" onerror="this.style.display='none'">
+        <img src="3.jpg" class="img-bg" id="rand-img-3" alt="Fondo 3" onerror="this.style.display='none'">
+        <img src="4.jpeg" class="img-bg" id="rand-img-4" alt="Fondo 4" onerror="this.style.display='none'">
+        <img src="5.jpeg" class="img-bg" id="rand-img-5" alt="Fondo 5" onerror="this.style.display='none'">
+        <img src="6.jpeg" class="img-bg" id="rand-img-6" alt="Fondo 6" onerror="this.style.display='none'">
+        <img src="7.jpeg" class="img-bg" id="rand-img-7" alt="Fondo 7" onerror="this.style.display='none'">
+    </div>
+
+    <!-- CABECERA -->
+    <div class="header-section">
+        <h1>MUNDIVIEZO</h1>
+        <p class="sponsor-subtitle">Auspiciado por DICTAORLANDO</p>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+        <h2>Sorteo Fase de Grupos - Valdiyork 2026</h2>
+        
+        <div class="setup-group">
+            <div class="input-box">
+                <label for="totalPlayers">Cant. Jugadores:</label>
+                <input type="number" id="totalPlayers" min="2" max="32" placeholder="Ej: 6">
+            </div>
+            <div class="input-box">
+                <label for="maxPerGroup">Jugadores por Grupo:</label>
+                <input type="number" id="maxPerGroup" min="1" max="4" placeholder="Ej: 3">
+            </div>
+        </div>
+
+        <button class="secondary" onclick="generatePlayerFields()">Continuar Sorteo</button>
+
+        <div id="players-form">
+            <h3 style="color: var(--wc-lime);">Ingresa los Participantes</h3>
+            <button class="secondary" onclick="autoFillKnownPlayers()" style="margin-bottom: 25px; background: linear-gradient(90deg, #1D428A, #6A2A88); font-size: 1.1em;">⚡ Autocompletar Nombres Conocidos</button>
+            <div id="dynamic-inputs"></div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="addCpu" checked>
+                <label for="addCpu" style="margin:0; color: white;">
+                    Añadir rivales CPU para completar grupos de 4 (Dinámica de Mundial Real)
+                </label>
+            </div>
+
+            <button onclick="realizarSorteo()">¡REALIZAR SORTEO!</button>
+        </div>
+
+        <div id="results">
+            <h2 style="font-size: 2.5em; color: var(--wc-lime);">Grupos Oficiales</h2>
+            <div id="groups-wrapper" class="groups-container"></div>
+            
+            <!-- SECCIÓN PREDICCIÓN -->
+            <div class="prediction-section" id="prediction-section" style="display: none;">
+                <button class="secondary" onclick="predictWinner()" style="margin-bottom: 30px; font-size: 1.3em; background: linear-gradient(90deg, var(--wc-purple), var(--wc-red));">🔮 Predice el ganador 🏆</button>
+                
+                <h3 id="prediction-phrase" class="prediction-phrase"></h3>
+                
+                <div class="fifa-card" id="fifa-card">
+                    <div class="card-top">
+                        <div class="card-rating" id="card-rating">99</div>
+                        <div class="card-position">ST</div>
+                        <img id="card-country" src="https://flagcdn.com/w80/un.png" style="width: 35px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); object-fit: cover;" alt="flag">
+                    </div>
+                    <div class="card-image-container">
+                        <img src="" id="card-img" alt="Player Image">
+                    </div>
+                    <div class="card-name" id="card-name">NOMBRE</div>
+                    <div class="card-stats">
+                        <div class="stat-col">
+                            <div><span id="stat-pac">99</span> PAC</div>
+                            <div><span id="stat-sho">95</span> SHO</div>
+                            <div><span id="stat-pas">90</span> PAS</div>
+                        </div>
+                        <div class="stat-col">
+                            <div><span id="stat-dri">98</span> DRI</div>
+                            <div><span id="stat-def">85</span> DEF</div>
+                            <div><span id="stat-phy">92</span> PHY</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Posicionar imágenes aleatoriamente al cargar
+        window.onload = function() {
+            const images = ['rand-img-1', 'rand-img-2', 'rand-img-3', 'rand-img-4', 'rand-img-5', 'rand-img-6', 'rand-img-7'];
+            
+            // Definimos zonas (cuadrantes/márgenes) para evitar que se superpongan mucho.
+            // Formato: [topMin, topMax, leftMin, leftMax] en porcentajes
+            const zones = [
+                [5, 20, 5, 20],      // Arriba Izquierda
+                [5, 20, 75, 85],     // Arriba Derecha
+                [75, 85, 5, 20],     // Abajo Izquierda
+                [75, 85, 75, 85],    // Abajo Derecha
+                [40, 55, 0, 10],     // Medio Izquierda
+                [40, 55, 80, 90],    // Medio Derecha
+                [5, 10, 40, 50]      // Arriba Centro
+            ];
+
+            images.forEach((id, index) => {
+                const el = document.getElementById(id);
+                if(el && zones[index]) {
+                    const zone = zones[index];
+                    const randomTop = Math.floor(Math.random() * (zone[1] - zone[0] + 1)) + zone[0] + '%';
+                    const randomLeft = Math.floor(Math.random() * (zone[3] - zone[2] + 1)) + zone[2] + '%';
+                    const randomRotate = Math.floor(Math.random() * 60) - 30; // -30 a 30 grados
+                    
+                    el.style.top = randomTop;
+                    el.style.left = randomLeft;
+                    el.style.transform = `rotate(${randomRotate}deg)`;
+                    
+                    // Colores de borde aleatorios
+                    const colors = ['var(--wc-red)', 'var(--wc-blue)', 'var(--wc-orange)', 'var(--wc-lime)', 'var(--wc-purple)'];
+                    el.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+                }
+            });
+        };
+
+        // Base de datos de 48 países mundialistas definidos
+        const countryDB = [
+            { id: 'Estados Unidos', name: 'Estados Unidos', code: 'us' },
+            { id: 'México', name: 'México', code: 'mx' },
+            { id: 'Canadá', name: 'Canadá', code: 'ca' },
+            { id: 'Japón', name: 'Japón', code: 'jp' },
+            { id: 'Nueva Zelanda', name: 'Nueva Zelanda', code: 'nz' },
+            { id: 'Irán', name: 'Irán', code: 'ir' },
+            { id: 'Argentina', name: 'Argentina', code: 'ar' },
+            { id: 'Uzbekistán', name: 'Uzbekistán', code: 'uz' },
+            { id: 'Corea del Sur', name: 'Corea del Sur', code: 'kr' },
+            { id: 'Jordania', name: 'Jordania', code: 'jo' },
+            { id: 'Australia', name: 'Australia', code: 'au' },
+            { id: 'Brasil', name: 'Brasil', code: 'br' },
+            { id: 'Ecuador', name: 'Ecuador', code: 'ec' },
+            { id: 'Uruguay', name: 'Uruguay', code: 'uy' },
+            { id: 'Colombia', name: 'Colombia', code: 'co' },
+            { id: 'Paraguay', name: 'Paraguay', code: 'py' },
+            { id: 'Marruecos', name: 'Marruecos', code: 'ma' },
+            { id: 'Túnez', name: 'Túnez', code: 'tn' },
+            { id: 'Egipto', name: 'Egipto', code: 'eg' },
+            { id: 'Argelia', name: 'Argelia', code: 'dz' },
+            { id: 'Ghana', name: 'Ghana', code: 'gh' },
+            { id: 'Cabo Verde', name: 'Cabo Verde', code: 'cv' },
+            { id: 'Sudáfrica', name: 'Sudáfrica', code: 'za' },
+            { id: 'Qatar', name: 'Qatar', code: 'qa' },
+            { id: 'Inglaterra', name: 'Inglaterra', code: 'gb-eng' },
+            { id: 'Arabia Saudita', name: 'Arabia Saudita', code: 'sa' },
+            { id: 'Costa de Marfil', name: 'Costa de Marfil', code: 'ci' },
+            { id: 'Senegal', name: 'Senegal', code: 'sn' },
+            { id: 'Francia', name: 'Francia', code: 'fr' },
+            { id: 'Croacia', name: 'Croacia', code: 'hr' },
+            { id: 'Portugal', name: 'Portugal', code: 'pt' },
+            { id: 'Noruega', name: 'Noruega', code: 'no' },
+            { id: 'Países Bajos', name: 'Países Bajos', code: 'nl' },
+            { id: 'Alemania', name: 'Alemania', code: 'de' },
+            { id: 'Bélgica', name: 'Bélgica', code: 'be' },
+            { id: 'Suiza', name: 'Suiza', code: 'ch' },
+            { id: 'España', name: 'España', code: 'es' },
+            { id: 'Austria', name: 'Austria', code: 'at' },
+            { id: 'Escocia', name: 'Escocia', code: 'gb-sct' },
+            { id: 'Curazao', name: 'Curazao', code: 'cw' },
+            { id: 'Haití', name: 'Haití', code: 'ht' },
+            { id: 'Panamá', name: 'Panamá', code: 'pa' },
+            { id: 'Suecia', name: 'Suecia', code: 'se' },
+            { id: 'Turquía', name: 'Turquía', code: 'tr' },
+            { id: 'República Checa', name: 'República Checa', code: 'cz' },
+            { id: 'Bosnia y Herzegovina', name: 'Bosnia y Herzegovina', code: 'ba' },
+            { id: 'RD Congo', name: 'RD Congo', code: 'cd' },
+            { id: 'Irak', name: 'Irak', code: 'iq' }
+        ];
+
+        // Colores de la paleta para los encabezados de los grupos
+        const groupColors = ['#E31C25', '#F36D21', '#B5D334', '#1D428A', '#6A2A88'];
+        let tomSelectInstances = [];
+
+        // Sonido de selección tipo PES
+        const pesSelectSound = new Audio('pes_select.mp3');
+        function playSelectSound() {
+            pesSelectSound.currentTime = 0;
+            pesSelectSound.play().catch(e => console.log('Esperando interacción para el sonido'));
+        }
+
+        // Sonido para botones
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                playSelectSound();
+            }
+        });
+
+        function generatePlayerFields() {
+            const total = parseInt(document.getElementById('totalPlayers').value);
+            const maxPerGroup = parseInt(document.getElementById('maxPerGroup').value);
+
+            if (!total || !maxPerGroup || total < 2 || maxPerGroup < 1) {
+                alert("Por favor, ingresa números válidos.");
+                return;
+            }
+
+            const container = document.getElementById('dynamic-inputs');
+            container.innerHTML = ''; 
+            
+            // Limpiar instancias previas de TomSelect
+            tomSelectInstances.forEach(ts => ts.destroy());
+            tomSelectInstances = [];
+
+            for (let i = 0; i < total; i++) {
+                const row = document.createElement('div');
+                row.className = 'player-row';
+                
+                // Crear opciones para el select
+                let optionsHtml = '<option value="">Selecciona un país...</option>';
+                countryDB.forEach(country => {
+                    optionsHtml += `<option value="${country.id}">${country.id}</option>`;
+                });
+
+                // Opciones para nombres predefinidos
+                let nameOptions = '<option value="">Elige o escribe...</option>';
+                ['Alexis', 'Aaron', 'Emir', 'Kevin', 'Sergio', 'Daniel'].forEach(n => {
+                    nameOptions += `<option value="${n}">${n}</option>`;
+                });
+
+                row.style.gap = '30px';
+                row.innerHTML = `
+                    <!-- Columna Jugador -->
+                    <div class="input-box" style="flex: 1; align-items: center; text-align: center;">
+                        <img id="player-img-preview-${i}" src="unknown_ghibli.png" style="width: 140px; height: 140px; border-radius: 15px; object-fit: cover; border: 4px solid var(--wc-lime); margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);" alt="preview">
+                        <div style="width: 100%; text-align: left;">
+                            <select class="player-name" id="select-name-${i}">
+                                ${nameOptions}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Columna País -->
+                    <div class="input-box" style="flex: 1; align-items: center; text-align: center;">
+                        <div style="width: 140px; height: 140px; border-radius: 15px; background: rgba(0,0,0,0.6); border: 4px solid var(--wc-blue); display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden;">
+                            <img id="country-flag-preview-${i}" src="https://flagcdn.com/w160/un.png" style="width: 100%; height: 100%; object-fit: cover;" alt="flag">
+                        </div>
+                        <div style="width: 100%; text-align: left;">
+                            <select class="player-country" id="select-country-${i}">
+                                ${optionsHtml}
+                            </select>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+
+                // Inicializar Tom Select para el país
+                const tsCountryInstance = new TomSelect(`#select-country-${i}`,{
+                    create: false,
+                    sortField: { field: "text", direction: "asc" },
+                    onChange: function(value) {
+                        playSelectSound();
+                        const countryData = countryDB.find(c => c.id === value);
+                        const code = countryData ? countryData.code : 'un';
+                        document.getElementById(`country-flag-preview-${i}`).src = `https://flagcdn.com/w160/${code}.png`;
+                    }
+                });
+                tomSelectInstances.push(tsCountryInstance);
+
+                // Inicializar Tom Select para el nombre (permite crear nuevos)
+                const tsNameInstance = new TomSelect(`#select-name-${i}`, {
+                    create: true,
+                    createOnBlur: true,
+                    placeholder: "Elige o escribe...",
+                    onChange: function(value) {
+                        playSelectSound();
+                        updatePlayerPreview(value, `player-img-preview-${i}`);
+                    }
+                });
+                tomSelectInstances.push(tsNameInstance);
+            }
+
+            document.getElementById('players-form').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function updatePlayerPreview(value, imgId) {
+            const lowerName = (value || '').toLowerCase();
+            let imgSrc = 'unknown_ghibli.png';
+            if (lowerName.includes('alexis')) imgSrc = 'alexis_ghibli.png';
+            else if (lowerName.includes('aaron')) imgSrc = 'aaron_ghibli.png';
+            else if (lowerName.includes('emir')) imgSrc = 'emir_ghibli.png';
+            else if (lowerName.includes('kevin')) imgSrc = 'kevin_ghibli.png';
+            else if (lowerName.includes('sergio')) imgSrc = 'sergio_ghibli.png';
+            else if (lowerName.includes('daniel')) imgSrc = 'daniel_ghibli.png';
+            
+            document.getElementById(imgId).src = imgSrc;
+        }
+
+        function autoFillKnownPlayers() {
+            const knownNames = ['Alexis', 'Aaron', 'Emir', 'Kevin', 'Sergio', 'Daniel'];
+            const nameSelects = document.querySelectorAll('select.player-name');
+            for (let i = 0; i < nameSelects.length; i++) {
+                if (knownNames[i]) {
+                    const ts = nameSelects[i].tomselect;
+                    if (ts) {
+                        ts.setValue(knownNames[i]);
+                    }
+                }
+            }
+        }
+
+        function realizarSorteo() {
+            const nameInputs = document.querySelectorAll('select.player-name');
+            const countrySelects = document.querySelectorAll('select.player-country');
+            const maxPerGroup = parseInt(document.getElementById('maxPerGroup').value);
+            const addCpu = document.getElementById('addCpu').checked;
+
+            let players = [];
+            for (let i = 0; i < nameInputs.length; i++) {
+                const name = nameInputs[i].value.trim() || `Jugador ${i + 1}`;
+                const country = countrySelects[i].value || `Desconocido`;
+                players.push({ name, country, isCpu: false });
+            }
+
+            // Sorteo aleatorio (Fisher-Yates)
+            for (let i = players.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [players[i], players[j]] = [players[j], players[i]];
+            }
+
+            // Separar en grupos
+            let groups = [];
+            for (let i = 0; i < players.length; i += maxPerGroup) {
+                groups.push(players.slice(i, i + maxPerGroup));
+            }
+
+            // Completar con CPU
+            if (addCpu) {
+                groups = groups.map(group => {
+                    while (group.length < 4) {
+                        // País aleatorio para el CPU
+                        const randomCountry = countryDB[Math.floor(Math.random() * countryDB.length)];
+                        group.push({ name: 'CPU (Bot)', country: randomCountry.id, isCpu: true });
+                    }
+                    return group;
+                });
+            }
+
+            renderGroups(groups);
+        }
+
+        function renderGroups(groups) {
+            const wrapper = document.getElementById('groups-wrapper');
+            wrapper.innerHTML = '';
+            
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            groups.forEach((group, index) => {
+                const groupLetter = alphabet[index] || (index + 1);
+                const bgColor = groupColors[index % groupColors.length]; // Color dinámico
+                
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'group-card';
+                
+                let listHTML = '';
+                group.forEach(player => {
+                    const cpuClass = player.isCpu ? 'cpu-player' : '';
+                    const icon = player.isCpu ? '🤖' : '🎮';
+                    
+                    const cData = countryDB.find(c => c.id === player.country) || { code: 'un' };
+                    const flagImg = `<img src="https://flagcdn.com/w40/${cData.code}.png" style="width: 24px; vertical-align: middle; margin-right: 8px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" alt="flag">`;
+
+                    listHTML += `
+                        <li class="${cpuClass}">
+                            <span>${icon} ${player.name}</span>
+                            <span class="badge-country" style="display: flex; align-items: center;">${flagImg} ${player.country}</span>
+                        </li>
+                    `;
+                });
+
+                groupDiv.innerHTML = `
+                    <div class="group-header" style="background-color: ${bgColor}; color: white;">GRUPO ${groupLetter}</div>
+                    <ul>${listHTML}</ul>
+                `;
+                
+                wrapper.appendChild(groupDiv);
+            });
+
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('prediction-section').style.display = 'block';
+            document.getElementById('prediction-phrase').innerHTML = '';
+            document.getElementById('fifa-card').style.display = 'none';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- LÓGICA DE MÚSICA ---
+        const tracks = ['1.mp3', '2.mp3', '3.mp3', '4.mp3', '5.mp3']; 
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        const audio = new Audio(tracks[currentTrackIndex]);
+        
+        // Reproducir la siguiente canción automáticamente
+        audio.addEventListener('ended', nextTrack);
+
+        function toggleMusic() {
+            const btn = document.getElementById('play-pause-btn');
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                btn.innerHTML = '🔇 Reproducir';
+                btn.style.background = 'rgba(255,255,255,0.1)';
+                btn.style.color = 'white';
+            } else {
+                audio.play().catch(e => {
+                    
+                });
+                isPlaying = true;
+                btn.innerHTML = '🔊 Pausar';
+                btn.style.background = 'var(--wc-lime)';
+                btn.style.color = 'var(--wc-dark)';
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            audio.src = tracks[currentTrackIndex];
+            
+            // Efecto visual en el botón
+            const nextBtn = document.getElementById('next-track-btn');
+            nextBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => nextBtn.style.transform = 'scale(1)', 150);
+
+            if (isPlaying) {
+                audio.play().catch(e => console.log('Error reproduciendo música', e));
+            }
+        }
+
+        function prevTrack() {
+            // Aseguramos que el índice sea positivo al restar
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            audio.src = tracks[currentTrackIndex];
+            
+            // Efecto visual en el botón
+            const prevBtn = document.getElementById('prev-track-btn');
+            prevBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => prevBtn.style.transform = 'scale(1)', 150);
+
+            if (isPlaying) {
+                audio.play().catch(e => console.log('Error reproduciendo música', e));
+            }
+        }
+        // --- LÓGICA DE PREDICCIÓN ---
+        function predictWinner() {
+            // Filtrar solo los jugadores reales (que tengan un campo de nombre ingresado)
+            const nameInputs = document.querySelectorAll('select.player-name');
+            const countrySelects = document.querySelectorAll('select.player-country');
+            
+            let realPlayers = [];
+            for (let i = 0; i < nameInputs.length; i++) {
+                const name = nameInputs[i].value.trim();
+                const countryId = countrySelects[i].value;
+                if (name) { 
+                    // Obtener la bandera
+                    const countryData = countryDB.find(c => c.id === countryId) || { id: 'Desconocido', code: 'un' };
+                    realPlayers.push({ name: name, code: countryData.code });
+                }
+            }
+
+            if (realPlayers.length === 0) {
+                alert("No hay jugadores reales para predecir.");
+                return;
+            }
+
+            // Seleccionar ganador al azar
+            const winner = realPlayers[Math.floor(Math.random() * realPlayers.length)];
+            const lowerName = winner.name.toLowerCase();
+
+            // Frases base
+            let phrases = [
+                `${winner.name} ganará la copa y se llevará el PS5 a su casa`,
+                `${winner.name} será el nuevo dictador y ganador`,
+                `${winner.name} se pondrá el chifita con el premio del mundial`,
+                `${winner.name} no olvides reclamar tus dólares ya que serás el winner`
+            ];
+
+            // Condición especial para Alexis
+            if (!lowerName.includes('alexis')) {
+                phrases.push(`${winner.name} ganará en la cara del bicho`);
+            }
+            
+            // Condición especial para Emir (no mostrarle la frase del departamento)
+            if (!lowerName.includes('emir')) {
+                phrases.push(`${winner.name} será el nuevo rey y dueño del departamento porque ganará el torneo`);
+            }
+
+            const finalPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            document.getElementById('prediction-phrase').innerHTML = "⏳ El Oráculo está decidiendo...";
+            document.getElementById('fifa-card').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('prediction-phrase').innerHTML = `✨ ${finalPhrase} ✨`;
+                
+                // Determinar imagen
+                let imgSrc = 'unknown_ghibli.png';
+                if (lowerName.includes('alexis')) imgSrc = 'alexis_ghibli.png';
+                else if (lowerName.includes('aaron')) imgSrc = 'aaron_ghibli.png';
+                else if (lowerName.includes('emir')) imgSrc = 'emir_ghibli.png';
+                else if (lowerName.includes('kevin')) imgSrc = 'kevin_ghibli.png';
+                else if (lowerName.includes('sergio')) imgSrc = 'sergio_ghibli.png';
+                else if (lowerName.includes('daniel')) imgSrc = 'daniel_ghibli.png';
+
+                document.getElementById('card-img').src = imgSrc;
+                document.getElementById('card-name').innerText = winner.name;
+                document.getElementById('card-country').src = `https://flagcdn.com/w80/${winner.code}.png`;
+                
+                // Stats aleatorios entre 85 y 99
+                const randStat = () => Math.floor(Math.random() * 15) + 85;
+                document.getElementById('card-rating').innerText = Math.floor(Math.random() * 5) + 95; // 95-99
+                document.getElementById('stat-pac').innerText = randStat();
+                document.getElementById('stat-sho').innerText = randStat();
+                document.getElementById('stat-pas').innerText = randStat();
+                document.getElementById('stat-dri').innerText = randStat();
+                document.getElementById('stat-def').innerText = Math.floor(Math.random() * 30) + 60; // 60-89
+                document.getElementById('stat-phy').innerText = randStat();
+
+                document.getElementById('fifa-card').style.display = 'block';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
