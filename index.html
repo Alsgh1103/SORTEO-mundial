@@ -12,7 +12,61 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
+    <!-- Confetti JS -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
+        /* MODAL DE CUMPLEAÑOS */
+        #birthday-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+        }
+        .birthday-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5em;
+            text-align: center;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #FFD700, #FFA500, #FF4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: pulseText 2s infinite alternate;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        @keyframes pulseText {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        .birthday-btn {
+            background: linear-gradient(90deg, #FFD700, #FF8C00);
+            color: #121212;
+            font-size: 1.5em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+        .birthday-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.8);
+        }
+        @media (max-width: 600px) {
+            .birthday-text { font-size: 2.5em; }
+            .birthday-btn { font-size: 1.2em; padding: 12px 30px; }
+        }
+
         /* Paleta Oficial de la Copa Mundial 2026 */
         :root {
             --wc-red: #E31C25;
@@ -430,6 +484,11 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
+        @keyframes goldenPulse {
+            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            100% { box-shadow: 0 0 60px rgba(255, 215, 0, 1), 0 0 100px rgba(255, 215, 0, 0.8); }
+        }
+
         .card-top {
             position: absolute;
             top: 20px;
@@ -503,6 +562,12 @@
     </style>
 </head>
 <body>
+
+    <!-- OVERLAY DE CUMPLEAÑOS -->
+    <div id="birthday-overlay">
+        <h1 class="birthday-text">¡Feliz Cumpleaños Emir! 🎂🎉</h1>
+        <button class="birthday-btn" onclick="closeBirthdayOverlay()">¡Empezar Sorteo!</button>
+    </div>
 
     <!-- REPRODUCTOR DE MÚSICA -->
     <div class="music-player">
@@ -598,8 +663,46 @@
     </div>
 
     <script>
+        // Funciones del Overlay de Cumpleaños
+        function launchConfetti() {
+            var duration = 4 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                }));
+                confetti(Object.assign({}, defaults, { particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                }));
+            }, 250);
+        }
+
+        function closeBirthdayOverlay() {
+            playSelectSound();
+            const overlay = document.getElementById('birthday-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        }
+
         // Posicionar imágenes aleatoriamente al cargar
         window.onload = function() {
+            launchConfetti(); // Lanzar confeti al entrar
+
             const images = ['rand-img-1', 'rand-img-2', 'rand-img-3', 'rand-img-4', 'rand-img-5', 'rand-img-6', 'rand-img-7'];
             
             // Definimos zonas (cuadrantes/márgenes) para evitar que se superpongan mucho.
@@ -873,7 +976,12 @@
                 let listHTML = '';
                 group.forEach(player => {
                     const cpuClass = player.isCpu ? 'cpu-player' : '';
-                    const icon = player.isCpu ? '🤖' : '🎮';
+                    let icon = player.isCpu ? '🤖' : '🎮';
+                    
+                    // Corona para Emir
+                    if (player.name.toLowerCase().includes('emir')) {
+                        icon = '👑';
+                    }
                     
                     const cData = countryDB.find(c => c.id === player.country) || { code: 'un' };
                     const flagImg = `<img src="https://flagcdn.com/w40/${cData.code}.png" style="width: 24px; vertical-align: middle; margin-right: 8px; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);" alt="flag">`;
@@ -1008,11 +1116,22 @@
             setTimeout(() => {
                 document.getElementById('prediction-phrase').innerHTML = `✨ ${finalPhrase} ✨`;
                 
+                // Reset de estilos de la carta (por si se jugó antes con otro)
+                const fifaCard = document.getElementById('fifa-card');
+                fifaCard.style.boxShadow = '0 10px 40px rgba(0,0,0,0.9)';
+                fifaCard.style.border = '3px solid #FFF8DC';
+                fifaCard.style.animation = 'fadeInCard 1s ease forwards';
+                
                 // Determinar imagen
                 let imgSrc = 'unknown_ghibli.png';
                 if (lowerName.includes('alexis')) imgSrc = 'alexis_ghibli.png';
                 else if (lowerName.includes('aaron')) imgSrc = 'aaron_ghibli.png';
-                else if (lowerName.includes('emir')) imgSrc = 'emir_ghibli.png';
+                else if (lowerName.includes('emir')) {
+                    imgSrc = 'emir_ghibli.png';
+                    // Estilo dorado especial para Emir
+                    fifaCard.style.border = '4px solid #FFD700';
+                    fifaCard.style.animation = 'fadeInCard 1s ease forwards, goldenPulse 1.5s infinite alternate';
+                }
                 else if (lowerName.includes('kevin')) imgSrc = 'kevin_ghibli.png';
                 else if (lowerName.includes('sergio')) imgSrc = 'sergio_ghibli.png';
                 else if (lowerName.includes('daniel')) imgSrc = 'daniel_ghibli.png';
