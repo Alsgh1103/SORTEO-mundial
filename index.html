@@ -565,8 +565,8 @@
 
     <!-- OVERLAY DE CUMPLEAÑOS -->
     <div id="birthday-overlay">
-        <h1 class="birthday-text">¡Feliz Cumpleaños Emir! 🎂🎉</h1>
-        <button class="birthday-btn" onclick="closeBirthdayOverlay()">¡Empezar Sorteo!</button>
+        <h1 class="birthday-text" id="birthday-msg">¡Hay una sorpresa para Emir! 🎁</h1>
+        <button class="birthday-btn" id="birthday-action-btn" onclick="openSurprise()">Abrir Regalo</button>
     </div>
 
     <!-- REPRODUCTOR DE MÚSICA -->
@@ -664,6 +664,8 @@
 
     <script>
         // Funciones del Overlay de Cumpleaños
+        const birthdayAudio = new Audio('fc.mp3');
+
         function launchConfetti() {
             var duration = 4 * 1000;
             var animationEnd = Date.now() + duration;
@@ -690,7 +692,24 @@
             }, 250);
         }
 
+        function openSurprise() {
+            // Reproducir música (ahora sí lo permite porque fue un clic)
+            birthdayAudio.play().catch(e => console.log(e));
+            
+            // Lanzar confeti
+            launchConfetti();
+
+            // Cambiar texto
+            document.getElementById('birthday-msg').innerHTML = '¡Feliz Cumpleaños Emir! 🎂🎉';
+            
+            // Cambiar botón para que ahora cierre el overlay
+            const btn = document.getElementById('birthday-action-btn');
+            btn.innerHTML = '¡Empezar Sorteo!';
+            btn.onclick = closeBirthdayOverlay;
+        }
+
         function closeBirthdayOverlay() {
+            birthdayAudio.pause();
             playSelectSound();
             const overlay = document.getElementById('birthday-overlay');
             overlay.style.opacity = '0';
@@ -701,7 +720,6 @@
 
         // Posicionar imágenes aleatoriamente al cargar
         window.onload = function() {
-            launchConfetti(); // Lanzar confeti al entrar
 
             const images = ['rand-img-1', 'rand-img-2', 'rand-img-3', 'rand-img-4', 'rand-img-5', 'rand-img-6', 'rand-img-7'];
             
